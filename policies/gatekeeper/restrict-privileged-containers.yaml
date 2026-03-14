@@ -1,0 +1,12 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sAllowedCapabilities
+metadata:
+  name: disallow-privileged-capabilities
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces: ["apps-prod"]
+  parameters:
+    allowedCapabilities: []
