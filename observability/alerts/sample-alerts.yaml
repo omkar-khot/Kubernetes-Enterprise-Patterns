@@ -1,0 +1,11 @@
+groups:
+  - name: sample-app-alerts
+    rules:
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{app="sample-app",status=~"5.."}[5m]) > 1
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High 5xx error rate for sample-app"
+          description: "sample-app is returning more than 1 5xx per second over 10 minutes."
