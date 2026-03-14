@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: apps-dev
+  labels:
+    env: dev
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: apps-stg
+  labels:
+    env: stg
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: apps-prod
+  labels:
+    env: prod
