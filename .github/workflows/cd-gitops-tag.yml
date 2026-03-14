@@ -1,0 +1,29 @@
+name: gitops-promo
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to promote (dev|stg|prod)"
+        required: true
+        default: "stg"
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Bump app image tag for environment
+        run: |
+          ENV="${{ github.event.inputs.environment }}"
+          NEW_TAG="${{ github.sha }}"
+          FILE="gitops/apps/sample-app/overlays/${ENV}/kustomization.yaml"
+          sed -i "s#ghcr.io/my-org/sample-app:.*#ghcr.io/my-org/sample-app:${NEW_TAG}#g" $FILE
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git commit -am "Promote sample-app to ${ENV} (${NEW_TAG})" || echo "No changes"
+          git push
